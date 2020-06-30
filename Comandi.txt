@@ -1,0 +1,72 @@
+# ------------------ alias (nota i backslash per non valutare subito gli alias)
+alias dk_last_image_id="docker images | awk '{print \$3}' | awk 'NR==2'"
+# alias dk_last_cont_id="docker ps -l  --format '{{.ID}}'"
+alias dk_last_cont_id="docker ps -lq"
+alias dk_remove_last_container='docker stop $(docker ps -lq); docker rm $(docker ps -lq)'
+alias dk_remove_all_container='docker stop $(docker ps -aq); docker rm $(docker ps -aq)'
+alias dk_last_cont_ip_win="docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' \$( dk_last_cont_id )"
+alias dk_last_cont_ip_unx="docker inspect --format '{{ .NetworkSettings.IPAddress }}' \$( dk_last_cont_id )"
+alias dk_last_cont_bash="docker exec -it \$( dk_last_cont_id ) /bin/bash"
+alias dk_last_cont_ps1="docker exec -it \$( dk_last_cont_id ) powershell"
+
+
+
+# ------------------- Immagini
+docker build -t jenkins .       # build & tag
+
+docker images                   # list
+docker image rm 1964983547b6    # remove
+docker image prune              # remove tutte le immagini non usate
+docker rmi jenkins-official     # remove tag (e immagine)
+
+
+# ------------------- Containers
+
+docker ps -a
+docker rm cd2e25258871
+docker restart $( dk_last_cont_id ) # stop e restart l'ultimo cont
+docker start $( dk_last_cont_id )   # start l'ultimo container
+
+# ------------------- Lancia l'ultima immagine buildata
+docker run -it $(dk_last_image_id)
+# Se vuoi anche rimuoverlo quando esce
+docker run -it --rm $(dk_last_image_id)
+
+
+# ------------------- Esegui bash in ultimo container lanciato
+# Linux
+docker exec -it $( dk_last_cont_id ) /bin/bash
+# Windows
+docker exec -it $( dk_last_cont_id ) powershell
+
+
+# ------------------- Container IP Addr
+# Linux
+docker inspect --format "{{ .NetworkSettings.IPAddress }}" $( dk_last_cont_id )
+# Windows - networking è diverso, non posso accedere con localhost, ma solo con indirizzo Nattato
+docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' $( dk_last_cont_id )
+
+
+# ------------------- NetworkSettings
+docker network ls
+docker network inspect <NetName>
+
+# ------------------- Volumes
+docker volume ls
+# Who is using a Volume?
+docker ps -a --filter volume=VOLUME_NAME_OR_MOUNT_POINT
+
+# ------------------- Docker diag
+docker service ps --no-trunc jk_jenkins
+
+# ------------------- Docker Hub
+docker login --username=andreav
+docker tag bb38976d03cf andreav/jenkins:1.0-windowsservercore
+docker push andreav/jenkins:1.0-windowsservercore
+
+# Se non vuoi sprecare banda:
+#  - crea un repo su Docker Hub
+#  - crea un repo su Git Hub
+#  - vai sotto builds in Docker Hub e collega il repo di Git Hub a quello di Docker Hub
+#    Scegli il branch, il DockerFile ed il tag che vuoi dare al build
+#    Builderai sulla loro infrastruttura, quindi tu pushi solo i DockerFile

@@ -1,0 +1,4 @@
+jenkins:
+    numExecutors: 2
+    slaveAgentPort: 55555
+         
