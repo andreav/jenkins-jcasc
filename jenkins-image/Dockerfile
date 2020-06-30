@@ -1,10 +1,6 @@
 FROM jenkins/jenkins:lts
 
-# To obtain plugin list from Jenkins
-# 
-# JENKINS_HOST=username:password@myhost.com:port
-# JENKINS_HOST=admin:passw0rd@localhost:8888
-# curl -sSL "http://$JENKINS_HOST/pluginManager/api/xml?depth=1&xpath=/*/*/shortName|/*/*/version&wrapper=plugins" | perl -pe 's/.*?<shortName>([\w-]+).*?<version>([^<]+)()(<\/\w+>)+/\1 \2\n/g'|sed 's/ /:/' > jenkins-image.plugins-online.txt
+# See README for updating this list
 COPY plugins_extra.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
