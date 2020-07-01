@@ -14,7 +14,7 @@ jobs:
         }        
       }  
   - script: >
-      pipelineJob('testjobs/test-pipeline-job') {
+      pipelineJob('testjobs/test-pipeline-job-inline') {
         definition {
           cps {
             script("""\
@@ -29,5 +29,19 @@ jobs:
                 }
               }""".stripIndent())
           }
+        }
+      }
+  - script: >
+      pipelineJob('testjobs/test-pipeline-job-jekinsfile') {
+        definition {
+          cpsScm {
+            scm {
+              github('andreav/nativescript-vue-test', 'master')
+            }
+          }
+        }
+        properties {
+          disableConcurrentBuilds()
+          disableResume()          
         }
       }
