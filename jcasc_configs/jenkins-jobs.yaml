@@ -1,0 +1,33 @@
+jobs:
+  - script: >
+      folder('testjobs')  
+  - script: >
+      freeStyleJob('testjobs/test-frestyle-job') {
+        scm {
+          github('andreav/nativescript-vue-test', 'master')
+        }
+        steps {
+          shell('echo Hello World!')
+        }
+        publishers {
+          archiveArtifacts('app/main.ts')
+        }        
+      }  
+  - script: >
+      pipelineJob('testjobs/test-pipeline-job') {
+        definition {
+          cps {
+            script("""\
+              pipeline {
+                agent any
+                stages {
+                  stage ('test') {
+                    steps {
+                      echo "hello"
+                    }
+                  }
+                }
+              }""".stripIndent())
+          }
+        }
+      }
