@@ -31,27 +31,23 @@ Here some commands for runnig without docker-compose or docker stack deploy
 
 Building image:
 
-`docker build -t andreav/jenkins-ns ./jenkins-image`
+`docker build -t andreav/jenkins-jcasc ./jenkins-image`
 
 And running the conatiner from a bash (mingw)
+- note the double slash in front of '//var/run/docekr.sock' mandatory from inside mingw
+- '--group-add 0' for letting jenkins user access /var/run/docker.sock
 
 ```
 docker run  -it \
             -v jenkins_home:/var/jenkins_home \
-            -v '\\.\pipe\docker_engine':'\\.\pipe\docker_engine' \
             -v $(cygpath.exe -w ${PWD})'/jcasc_configs':'/var/jenkins_home/jcasc_configs' \
             -p 8888:8080 \
             -p 55555:50000 \
-            andreav/jenkins-ns
+            -v "//var/run/docker.sock:/var/run/docker.sock" \
+            --group-add 0 \
+            --name jenkins \
+            andreav/jenkins-jcasc
 ```
-
-docker run  -it \
-            -v jenkins_home:/var/jenkins_home \
-            --privileged \
-            -v $(cygpath.exe -w ${PWD})'/jcasc_configs':'/var/jenkins_home/jcasc_configs' \
-            -p 8888:8080 \
-            -p 55555:50000 \
-            andreav/jenkins-ns
 
 # Updating plugins
 
@@ -69,3 +65,13 @@ docker run  -it \
 JCasC documentation: https://jenkins.io/projects/jcasc/
 
 And praqma blog: https://github.com/Praqma/praqma-jenkins-casc
+
+
+## Extra - Monitoring containers
+
+Using portainer is a nice way to monitor containers.
+Again, not the double slash in front of '//var/run/docekr.sock' mandatory from inside mingw
+
+``` bash
+docker run -d -p 9000:9000 --name portainer -v "//var/run/docker.sock:/var/run/docker.sock" portainer/portainer
+```

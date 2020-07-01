@@ -1,5 +1,11 @@
 FROM jenkins/jenkins:lts
 
+# install docker
+USER root
+RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+
+USER jenkins
+
 # See README for updating this list
 COPY plugins_extra.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt

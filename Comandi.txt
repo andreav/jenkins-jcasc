@@ -6,7 +6,7 @@ alias dk_remove_last_container='docker stop $(docker ps -lq); docker rm $(docker
 alias dk_remove_all_container='docker stop $(docker ps -aq); docker rm $(docker ps -aq)'
 alias dk_last_cont_ip_win="docker inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' \$( dk_last_cont_id )"
 alias dk_last_cont_ip_unx="docker inspect --format '{{ .NetworkSettings.IPAddress }}' \$( dk_last_cont_id )"
-alias dk_last_cont_bash="docker exec -it \$( dk_last_cont_id ) /bin/bash"
+alias dk_last_cont_bash="docker exec -it \$( dk_last_cont_id ) bash"
 alias dk_last_cont_ps1="docker exec -it \$( dk_last_cont_id ) powershell"
 
 
