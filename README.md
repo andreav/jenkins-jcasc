@@ -25,7 +25,7 @@ Then issue:
 
 And connect to localhost:8888
 
-## Docker run:
+## Docker run (secrets cannot be used here)
 
 Here some commands for runnig without docker-compose or docker stack deploy
 

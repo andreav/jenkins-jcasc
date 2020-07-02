@@ -4,7 +4,11 @@ FROM jenkins/jenkins:lts
 USER root
 RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 
+# for accessing /var/run/docker.sock
+RUN usermod -a -G 0 jenkins
+
 USER jenkins
+
 
 # See README for updating this list
 COPY plugins_extra.txt /usr/share/jenkins/ref/plugins.txt
