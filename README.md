@@ -2,7 +2,7 @@
 
 This image provides Jenkins + Jenkins Configuration-as-Code
 
-## Docker compose startup
+## Docker compose (secrets support)
 
 With this interaction, no secret can be passed to container (so for instance admin password cannot be modified) 
 
@@ -12,20 +12,7 @@ Just issue:
 
 And connect to localhost:8888
 
-## Docker swarm startup
-
-For using secrets, we must use docker swarm.
-First issue:
-
-`docker swarm init` (optionally add --advertise-addr)
-
-Then issue:
-
-`docker stack deploy -c docker-compose.yaml jk`
-
-And connect to localhost:8888
-
-## Docker run (secrets cannot be used here)
+## Docker run (secrets not supported)
 
 Here some commands for runnig without docker-compose or docker stack deploy
 
