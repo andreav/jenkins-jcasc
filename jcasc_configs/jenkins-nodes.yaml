@@ -1,0 +1,15 @@
+jenkins:
+    nodes:
+    - permanent:
+        labelString: "windows"
+        launcher:
+          jnlp:
+            workDirSettings:
+              disabled: false
+              failIfWorkDirIsMissing: false
+              internalDir: "remoting"
+        mode: EXCLUSIVE
+        name: "Windows"
+        remoteFS: "D:\\jenkins"
+        retentionStrategy: "always"
+   
