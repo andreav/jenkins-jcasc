@@ -32,6 +32,28 @@ jobs:
         }
       }
   - script: >
+      pipelineJob('testjobs/test-pipeline-on-win-slave') {
+        definition {
+          cps {
+            script("""\
+            pipeline {
+              agent {
+                label 'windows'
+              }
+              stages {
+                stage ('prepare-env') {
+                  steps {
+                    withCredentials([file(credentialsId: 'google_services_json', variable: 'VAR_GOOGLE_SERVICES_JSON')]) {
+                      bat label: '', script: 'copy %VAR_GOOGLE_SERVICES_JSON% google-services.json'
+                    }
+                  }
+                }
+              }
+            }""".stripIndent())
+          }
+        }
+      }
+  - script: >
       pipelineJob('testjobs/test-pipeline-job-jekinsfile') {
         definition {
           cpsScm {

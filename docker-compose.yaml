@@ -16,7 +16,7 @@ services:
     secrets:
       - source: github
       - source: adminpw
-      - source: google-services-json
+      - source: google_services_json
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/jcasc_configs
 secrets:
@@ -24,7 +24,9 @@ secrets:
     file: ./secrets/github
   adminpw:
     file: ./secrets/adminpw
-  google-services-json:
-      file: ./secrets/google-services.json  
+  google_services_json:
+    # Will be possible when this will be merged: https://github.com/jenkinsci/configuration-as-code-plugin/pull/1408
+    # file: ./secrets/google-services.json
+    file: ./secrets/google-services_b64.json  
 volumes:
   jenkins_home:
