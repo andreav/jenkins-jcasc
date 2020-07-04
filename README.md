@@ -4,7 +4,9 @@ This image provides Jenkins + Jenkins Configuration-as-Code
 
 ## Docker compose (secrets support)
 
-With this interaction, no secret can be passed to container (so for instance admin password cannot be modified) 
+With docker compose secrets can be passed to container thus creating credentials from configuration.
+
+As an example, one username/password and one file credentilas will be created.
 
 Just issue:
 
@@ -12,9 +14,9 @@ Just issue:
 
 And connect to localhost:8888
 
-## Docker run (secrets not supported)
+## Docker run (no secret support)
 
-Here some commands for runnig without docker-compose or docker stack deploy
+With docker run there is no secret support.
 
 Building image:
 
@@ -22,7 +24,6 @@ Building image:
 
 And running the conatiner from a bash (mingw)
 - note the double slash in front of '//var/run/docekr.sock' mandatory from inside mingw
-- '--group-add 0' for letting jenkins user access /var/run/docker.sock
 
 ```
 docker run  -it \
@@ -31,7 +32,6 @@ docker run  -it \
             -p 8888:8080 \
             -p 55555:50000 \
             -v "//var/run/docker.sock:/var/run/docker.sock" \
-            --group-add 0 \
             --name jenkins \
             andreav/jenkins-jcasc
 ```
@@ -52,6 +52,16 @@ docker run  -it \
 JCasC documentation: https://jenkins.io/projects/jcasc/
 
 And praqma blog: https://github.com/Praqma/praqma-jenkins-casc
+
+## Secuity
+
+In order to use docker in docker, jenkins user is added to admin group.
+
+Comment this line inside docker file if you do not need docker in docker support.
+
+```
+RUN usermod -a -G 0 jenkins
+```
 
 
 ## Extra - Monitoring containers
